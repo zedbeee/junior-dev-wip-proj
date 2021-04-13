@@ -2,7 +2,7 @@
   <div>
 
   </div>
-</template>
+</template>vue add
 
 <script>
 export default {
