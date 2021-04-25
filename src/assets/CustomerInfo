@@ -1,0 +1,55 @@
+{
+  "customers": [
+    {
+      "cid": "123456",
+      "fName": "James",
+      "lName": "Holden",
+      "phone": "6139431122",
+      "email": "jholden@gmail.com",
+      "billingAddress": {
+        "streetNumber": "1",
+        "streetName": "GENERIC",
+        "streetType": "rd",
+        "unitType": "",
+        "unitNumber": "",
+        "city": "TORONTO",
+        "province": "ON",
+        "postalCode": "M5R3G6"
+      },
+      "paymentMethod": "cc",
+      "orders": [
+        {
+          "oid": "147896",
+          "package": "Cable 150 Unlimited",
+          "download": "150 Mbps",
+          "s2s": "",
+          "createDate": "2020-01-01",
+          "status": "Active",
+          "streetNumber": "1",
+          "streetName": "GENERIC",
+          "streetType": "rd",
+          "unitType": "",
+          "unitNumber": "",
+          "city": "TORONTO",
+          "province": "ON",
+          "postalCode": "M5R3G6"
+        },
+        {
+          "oid": "125698",
+          "package": "Cable 75 Unlimited",
+          "S2S": "",
+          "createDate": "2002-01-01",
+          "status": "Cancelled",
+          "streetNumber": "53",
+          "streetName": "14th genero",
+          "streetType": "AV",
+          "unitType": "APT",
+          "unitNumber": "22",
+          "city": "OTTAWA",
+          "province": "ON",
+          "postalCode": "M5R3G6"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,75 @@
+{
+  "demands" :[
+  {
+    "cid": 123456,
+    "name": "I'd like Internet",
+    "type": "Value",
+    "createdDate": "2021-04-20",
+    "followDate": "2021-05-30",
+    "demandID" : 1,
+    "oid" : 147896
+  },
+  {
+    "cid": 123456,
+    "name": "I'd like to cancel",
+    "type": "Failure",
+    "createdDate": "2021-03-17",
+    "followDate": "2021-02-20",
+    "demandID" : 2,
+    "oid" : 125698
+  }
+],
+  "customers": [
+    {
+      "cid": "123456",
+      "fName": "James",
+      "lName": "Holden",
+      "phone": "6139431122",
+      "email": "jholden@gmail.com",
+      "billingAddress": {
+        "streetNumber": "1",
+        "streetName": "GENERIC",
+        "streetType": "rd",
+        "unitType": "",
+        "unitNumber": "",
+        "city": "TORONTO",
+        "province": "ON",
+        "postalCode": "M5R3G6"
+      },
+      "paymentMethod": "cc",
+      "orders": [
+        {
+          "oid": "147896",
+          "package": "Cable 150 Unlimited",
+          "download": "150 Mbps",
+          "S2S": "",
+          "createDate": "2020-01-01",
+          "status": "Active",
+          "streetNumber": "1",
+          "streetName": "GENERIC",
+          "streetType": "rd",
+          "unitType": "",
+          "unitNumber": "",
+          "city": "TORONTO",
+          "province": "ON",
+          "postalCode": "M5R3G6"
+        },
+        {
+          "oid": "125698",
+          "package": "Cable 75 Unlimited",
+          "S2S": "Father's residence",
+          "createDate": "2002-01-01",
+          "status": "Cancelled",
+          "streetNumber": "53",
+          "streetName": "14th genero",
+          "streetType": "AV",
+          "unitType": "APT",
+          "unitNumber": "22",
+          "city": "OTTAWA",
+          "province": "ON",
+          "postalCode": "M5R3G6"
+        }
+      ]
+    }
+  ]
+}

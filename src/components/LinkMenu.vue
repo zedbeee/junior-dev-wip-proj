@@ -5,9 +5,8 @@
     <v-list-item
         v-for="[icon, text] in links"
         :key="icon"
-        link
         class="linkMenu"
-
+        v-bind:to = "{name: 'overview'}"
     >
       <v-list-item-action>
         <v-icon
@@ -37,6 +36,7 @@
 <script>
 export default {
   name: 'LinkMenu',
+
   data: () => ({
     links: [
       ['mdi-view-list', 'Overview'],
@@ -53,6 +53,11 @@ export default {
 .linkMenu{
   max-height: 48px !important;
   min-height: 48px !important;
+}
+.v-list-item--link:before {
+ opacity: 0;
 
 }
+
+
 </style>

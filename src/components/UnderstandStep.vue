@@ -1,6 +1,6 @@
 <template>
   <v-container
-      class="py-7 px-6"
+      class="py-0 px-6"
       fluid
   >
     <v-timeline
@@ -54,7 +54,7 @@
           <v-card-text>
             <section>
               <div class="subheading mb-1">This customer is reaching out to us because</div>
-              <div class="title mt-1 mb-3">I'd like faster speed</div>
+              <div class="title mt-1 mb-3">{{ demandDetails.name }}</div>
             </section>
             <v-btn
                 tile
@@ -74,7 +74,7 @@
         <v-card>
           <v-card-text>
             <section>
-              <div class="title mt-1 mb-3">This is a Value demand</div>
+              <div class="title mt-1 mb-3">This is a {{demandDetails.type}} demand</div>
             </section>
             <v-btn
                 tile
@@ -102,6 +102,7 @@
                 placeholder="CID"
                 color="black"
                 background-color="white"
+                v-model="customerDetails.cid"
             >
             </v-text-field>
             <v-text-field
@@ -110,6 +111,7 @@
                 placeholder="Name"
                 color="black"
                 background-color="white"
+                v-model="fullName"
             >
             </v-text-field>
             <v-text-field
@@ -118,6 +120,7 @@
                 placeholder="Phone number"
                 color="black"
                 background-color="white"
+                v-model="customerDetails.phone"
             >
             </v-text-field>
             <v-text-field
@@ -126,6 +129,7 @@
                 placeholder="Email"
                 color="black"
                 background-color="white"
+                v-model="customerDetails.email"
             >
             </v-text-field>
             <v-btn
@@ -148,17 +152,98 @@
           <v-card-text>
             <div class="title">The following orders are associated with this demand</div>
             <v-divider class="mb-2 mt-2"></v-divider>
-            <div class="caption ">OID-123456</div>
-            <div class="title">Cable 100 Unlimited</div>
-            <div class="caption">Order created on 2017-07-18 at 12:00am</div>
+            <div class="caption ">OID-{{ orderDetails.oid }} / {{ orderDetails.S2S || orderDetails.streetNumber + " " + orderDetails.streetName + " " + orderDetails.city }}</div>
+            <div class="title">{{ orderDetails.package }}</div>
+            <div class="caption">Order created on {{ orderDetails.createDate }} at 12:00am</div>
             <v-divider class="mb-2 mt-2"></v-divider>
-            <v-btn
-                tile
+            <v-dialog
+                v-model="dialog"
+              fullscreen
+              hide-overlay
+              transition="dialog-bottom-transition"
+              >
+              <template v-slot:activator="{on, attrs}">
+                <v-btn
+                    tile
+                    color="primary"
+                    class="ma-0 mt-0"
+                    v-bind="attrs"
+                    v-on="on"
+                >
+                  Select the orders attached to this demand
+                </v-btn>
+              </template>
+              <v-card>
+                <v-toolbar
                 color="primary"
-                class="ma-0 mt-0"
-            >
-              Select the orders attached to this demand
-            </v-btn>
+                >
+                  <v-toolbar-title>Select the orders associated with this demand</v-toolbar-title>
+                  <v-spacer></v-spacer>
+                  <v-btn
+                      icon
+                      @click="dialog = false"
+                  >
+                    <v-icon
+                        color="green"
+                        large
+                    >
+                      mdi-checkbox-marked-circle
+                    </v-icon>
+                  </v-btn>
+                  <v-btn
+                      icon
+                      @click="dialog = false"
+                  >
+                    <v-icon
+                        color="red"
+                        large
+                    >
+                      mdi-close-circle
+                    </v-icon>
+                  </v-btn>
+                </v-toolbar>
+                <div class="d-flex justify-start">
+                  <div class="d-flex px-10 ">
+                    <p class="d-text-xs-center pt-3">Filter Orders</p>
+                  </div>
+                  <div class="d-flex px-10">
+                    <v-text-field class="pr-2 pt-0 pb-0"
+                    label="OID"
+                    single-line
+                    hide-details
+                    v-model="search"></v-text-field>
+                  </div>
+                </div>
+                <v-data-table
+                :headers="headers"
+                :items ="customerDetails.orders"
+                :items-per-page="25"
+                :search="search"
+                show-select
+
+
+                >
+                  <template v-slot:item="props">
+                    <tr>
+                      <td>
+                        <v-checkbox
+                        hide-details>
+
+                        </v-checkbox>
+                      </td>
+                      <td class="text-start">{{props.item.oid}}</td>
+                      <td class="text-start">{{ props.item.S2S ||  orderDetails.streetNumber + " " + orderDetails.streetName + " " + orderDetails.city  }}</td>
+                      <td class="text-start">{{props.item.package}}</td>
+                      <td class="text-start">{{props.item.status}}</td>
+                      <td class="text-start">{{props.item.createDate}}</td>
+                    </tr>
+                  </template>
+
+                </v-data-table>
+              </v-card>
+
+            </v-dialog>
+
           </v-card-text>
         </v-card>
       </v-timeline-item>
@@ -240,6 +325,90 @@
 </template>
 <script>
 export default {
-  name: 'UnderstandStep'
+  name: 'UnderstandStep',
+  mounted(){
+    this.orderDetails = this.getOrderDetails();
+    this.customerDetails = this.getCustomerDetails();
+    this.demandDetails = this.getDemandDetails();
+    this.fullName = this.getFullName();
+
+  },
+  watch:{
+    $route: function(){
+      this.orderDetails = this.getOrderDetails();
+      this.customerDetails = this.getCustomerDetails();
+      this.demandDetails = this.getDemandDetails();
+      this.fullName = this.getFullName();
+    }
+  },
+  methods: {
+    getFullName(){
+      return (this.customerDetails.fName + " " + this.customerDetails.lName);
+    },
+    getDemandDetails(){
+      for (const a of this.$store.state.demands){
+        if (a.demandID == this.$router.currentRoute.params.id){
+          return (a);
+        }
+      }
+    },
+    getCID(){
+      for (const a of this.$store.state.demands){
+        if (a.demandID == this.$router.currentRoute.params.id){
+          return (a.cid);
+        }
+      }
+    },
+    getCustomerDetails(){
+      let cid = this.getCID();
+      for (const a of this.$store.state.customers){
+        if (a.cid == cid){
+          return (a);
+        }
+      }
+    },
+    getOID() {
+      for (const a of this.$store.state.demands) {
+        if (a.demandID == this.$router.currentRoute.params.id) {
+          return (a.oid);
+        }
+      }
+    },
+    getOrderDetails() {
+      let oid = this.getOID();
+      for (const a of this.$store.state.customers) {
+        for (const b of a.orders){
+          if (b.oid == oid){
+            return (b);
+          }
+        }
+      }
+    }
+  },
+  data () {
+    return {
+      dialog: false,
+      search: '',
+      orderDetails : [],
+      allOrders : [],
+      customerDetails : [],
+      demandDetails: [],
+      fullName: '',
+      //orderNickname: '',
+      headers:[
+        {text: "OrderID", value: 'oid', align:'start' },
+        {text: "Title", value: 'nickname'},
+        {text: "Package", value: 'package' },
+        {text: "Status", value: 'status' },
+        {text: "Created Date", value: 'createDate' },
+      ]
+    }
+  }
 }
 </script>
+<style scoped>
+
+.v-input--selection-controls{
+  margin-top: 0px !important;
+}
+</style>

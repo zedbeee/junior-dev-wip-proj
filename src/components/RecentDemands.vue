@@ -4,28 +4,22 @@
     two-line
 
   >
+
     <v-list-item
-    class="demandList">
+    class="demandList"
+
+    v-for="demands in this.$store.state.demands"
+    :key="demands.demandID"
+    @click="dynaRoute(demands.demandID)">
+
       <v-list-item-action>
         <v-icon
             large
         >mdi-chevron-right</v-icon>
       </v-list-item-action>
       <v-list-item-content>
-        <v-list-item-title>JAMES HOLDEN</v-list-item-title>
-        <v-list-item-subtitle>I'd like faster speed</v-list-item-subtitle>
-      </v-list-item-content>
-    </v-list-item>
-    <v-list-item
-        class="demandList">
-      <v-list-item-icon>
-        <v-icon
-            large
-        >mdi-chevron-right</v-icon>
-      </v-list-item-icon>
-      <v-list-item-content>
-        <v-list-item-title>JAMES HOLDEN</v-list-item-title>
-        <v-list-item-subtitle>I'd like faster speed</v-list-item-subtitle>
+        <v-list-item-title>{{getName(demands.cid)}}</v-list-item-title>
+        <v-list-item-subtitle>{{ demands.name }}</v-list-item-subtitle>
       </v-list-item-content>
     </v-list-item>
 
@@ -34,7 +28,21 @@
 
 <script>
 export default {
-  name: "RecentDemands"
+  name: "RecentDemands",
+  methods: {
+    getName: function(incomingCid){
+      for (const a of this.$store.state.customers) {
+        if (a.cid == incomingCid){
+          return (a.fName + " " + a.lName );
+
+        }
+      }
+    },
+    dynaRoute(a){
+      this.$router.push({name: 'understand', params: {id: a}});
+    }
+  }
+
 }
 </script>
 

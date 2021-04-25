@@ -4,6 +4,7 @@
       fixed
       width="300px"
       height="100%"
+
   >
     <v-list
         three-line
@@ -11,7 +12,7 @@
     >
 
       <v-list-group no-action>
-        <v-list-item slot="activator" class="pr-2">
+        <v-list-item slot="activator" v-model="drawer" class="pr-2">
           <v-list-item-content>
             <v-list-item-title>My Internet is not working</v-list-item-title>
             <v-list-item-subtitle>Parent Demand</v-list-item-subtitle>
@@ -24,8 +25,9 @@
             class="px-2 ">
           <v-row justify="start" align="center">
             <v-col cols="1" sm="2">
-              <v-btn icon large>
+              <v-btn icon large v-bind:to="{name: 'customerInfo', params: {cid: 123456}}">
                 <v-icon>mdi-account-details</v-icon>
+
               </v-btn>
             </v-col>
 
@@ -207,6 +209,11 @@
 </template>
 <script>
 export default {
-  name: 'DemandStepNav'
+  name: 'DemandStepNav',
+  data (){
+    return {
+      drawer: true
+    }
+  }
 }
 </script>
