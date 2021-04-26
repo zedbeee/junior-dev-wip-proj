@@ -2,16 +2,17 @@
 
 ## Project setup
 ```
-npm install
+load project into IDE
+terminal: npm install
 ```
 ### Backend setup
 ```
-json-serve db.json
+terminal: json-serve db.json
 ```
 
 ### Compiles and hot-reloads for development
 ```
-npm run serve
+terminal: npm run serve
 ```
 
 
